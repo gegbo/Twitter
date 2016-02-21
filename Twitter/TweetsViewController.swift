@@ -30,9 +30,11 @@ class TweetsViewController: UIViewController, UITableViewDataSource,UITableViewD
             self.tableView.reloadData()
             
             for tweet in tweets{
-                print(tweet.text)
+                //print(tweet.text!)
             }
 
+            print(tweets)
+            
             }, failure: { (error: NSError) -> () in
                 print(error.localizedDescription)
         })
@@ -60,6 +62,46 @@ class TweetsViewController: UIViewController, UITableViewDataSource,UITableViewD
         return cell
         
     }
+    
+    @IBAction func pressRetweet(sender: AnyObject) {
+        
+        let button = sender as! UIButton
+        let view = button.superview!
+        let cell = view.superview as! TweetCell
+        
+        let indexPath = tableView.indexPathForCell(cell)
+        let tweet = tweets![indexPath!.row]
+        cell.retweetButton.setImage(UIImage(named: "retweet-action-on.png"), forState: UIControlState.Normal)
+        
+        let path = tweet.id
+        
+        TwitterClient.sharedInstance.retweet(path, params: nil) { (error) -> () in
+            print("Retweeting")
+            tweet.retweetCount = tweet.retweetCount + 1
+            //cell.retweetButton.setImage(UIImage(named: "retweet-action-on.png"), forState: UIControlState.Normal)
+            self.tableView.reloadData()
+        }
+    }
+    
+    @IBAction func pressLike(sender: AnyObject) {
+        
+        let button = sender as! UIButton
+        let view = button.superview!
+        let cell = view.superview as! TweetCell
+        
+        let indexPath = tableView.indexPathForCell(cell)
+        let tweet = tweets![indexPath!.row]
+        
+        
+        let path = tweet.id
+        
+        TwitterClient.sharedInstance.favorite(path, params: nil) { (error) -> () in
+                print("Retweeting")
+                tweet.favoritesCount = tweet.favoritesCount + 1
+                //cell.favoriteButton.setImage(UIImage(named: "like-action-on.png"), forState: UIControlState.Normal)
+                self.tableView.reloadData()
+            }
+       }
     
     @IBAction func onLogout(sender: AnyObject) {
         TwitterClient.sharedInstance.logout()
