@@ -22,9 +22,11 @@ class TweetsViewController: UIViewController, UITableViewDataSource,UITableViewD
         //set up the tableview
         tableView.dataSource = self
         tableView.delegate = self
-        //tableView.rowHeight = UITableViewAutomaticDimension
-        //tableView.estimatedRowHeight = 120
+//        tableView.rowHeight = UITableViewAutomaticDimension
+//        tableView.estimatedRowHeight = 120
 
+        navigationItem.title = "Timeline"
+        
         TwitterClient.sharedInstance.homeTimeline({ (tweets: [Tweet]) -> () in
             self.tweets = tweets
             self.tableView.reloadData()
@@ -71,14 +73,12 @@ class TweetsViewController: UIViewController, UITableViewDataSource,UITableViewD
         
         let indexPath = tableView.indexPathForCell(cell)
         let tweet = tweets![indexPath!.row]
-        cell.retweetButton.setImage(UIImage(named: "retweet-action-on.png"), forState: UIControlState.Normal)
         
         let path = tweet.id
         
         TwitterClient.sharedInstance.retweet(path, params: nil) { (error) -> () in
             print("Retweeting")
             tweet.retweetCount = tweet.retweetCount + 1
-            //cell.retweetButton.setImage(UIImage(named: "retweet-action-on.png"), forState: UIControlState.Normal)
             self.tableView.reloadData()
         }
     }
@@ -98,7 +98,6 @@ class TweetsViewController: UIViewController, UITableViewDataSource,UITableViewD
         TwitterClient.sharedInstance.favorite(path, params: nil) { (error) -> () in
                 print("Retweeting")
                 tweet.favoritesCount = tweet.favoritesCount + 1
-                //cell.favoriteButton.setImage(UIImage(named: "like-action-on.png"), forState: UIControlState.Normal)
                 self.tableView.reloadData()
             }
        }

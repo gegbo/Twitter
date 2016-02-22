@@ -33,6 +33,7 @@ class TweetCell: UITableViewCell {
             textContentLabel.text = tweet.text
             retweetCount.text = "\(tweet.retweetCount)"
             likeCount.text = "\(tweet.favoritesCount)"
+
         }
     }
     
@@ -40,6 +41,7 @@ class TweetCell: UITableViewCell {
         super.awakeFromNib()
         // Initialization code
         
+        textContentLabel.sizeToFit()
         profilePictureImage.layer.cornerRadius = 3
         profilePictureImage.clipsToBounds = true
     }
