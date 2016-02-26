@@ -34,8 +34,6 @@ class TweetsViewController: UIViewController, UITableViewDataSource,UITableViewD
             for tweet in tweets{
                 //print(tweet.text!)
             }
-
-            print(tweets)
             
             }, failure: { (error: NSError) -> () in
                 print(error.localizedDescription)
@@ -77,7 +75,6 @@ class TweetsViewController: UIViewController, UITableViewDataSource,UITableViewD
         let path = tweet.id
         
         TwitterClient.sharedInstance.retweet(path, params: nil) { (error) -> () in
-            print("Retweeting")
             tweet.retweetCount = tweet.retweetCount + 1
             self.tableView.reloadData()
         }
@@ -96,7 +93,6 @@ class TweetsViewController: UIViewController, UITableViewDataSource,UITableViewD
         let path = tweet.id
         
         TwitterClient.sharedInstance.favorite(path, params: nil) { (error) -> () in
-                print("Retweeting")
                 tweet.favoritesCount = tweet.favoritesCount + 1
                 self.tableView.reloadData()
             }
@@ -105,14 +101,46 @@ class TweetsViewController: UIViewController, UITableViewDataSource,UITableViewD
     @IBAction func onLogout(sender: AnyObject) {
         TwitterClient.sharedInstance.logout()
     }
-    /*
+    
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
+        
+        if (segue.identifier == "profileView")
+        {
+            let button = sender as! UIButton
+            let view = button.superview!
+            let cell = view.superview as! TweetCell
+            
+            let indexPath = tableView.indexPathForCell(cell)
+            
+            let user = tweets[indexPath!.row]
+            
+            let detailViewController = segue.destinationViewController as! ProfilePageViewController
+            
+            //create a user variale for tweets and then set user to tweets.user
+            print("Going to profile page")
+        }
+        
+        if(segue.identifier == "tweetDetail")
+        {
+            print("Going to tweet details")
+            let cell = sender as! TweetCell
+            let indexPath = tableView.indexPathForCell(cell)
+            
+            let tweet = tweets[indexPath!.row]
+            
+            let detailViewController = segue.destinationViewController as! DetailTweetViewController
+            
+            detailViewController.tweet = tweet
+
+        }
+
     }
-    */
+    
 
 }

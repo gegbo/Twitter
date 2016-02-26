@@ -8,8 +8,11 @@
 
 import UIKit
 
+//this is the cell that is in the table view controller 
 class TweetCell: UITableViewCell {
 
+    
+    
     @IBOutlet weak var profilePictureImage: UIImageView!
     @IBOutlet weak var name: UILabel!
     @IBOutlet weak var tagName: UILabel!
@@ -26,7 +29,6 @@ class TweetCell: UITableViewCell {
         didSet {
             tweetID = "\(tweet.id)"
             profilePictureImage.setImageWithURL(tweet.profileImageUrl!)
-            print(profilePictureImage)
             name.text = tweet.name
             tagName.text = "@\(tweet.username!)"
             time.text = calculateTimeStamp((tweet.timestamp?.timeIntervalSinceNow)!)
