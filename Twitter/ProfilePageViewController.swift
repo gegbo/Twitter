@@ -9,12 +9,40 @@
 import UIKit
 
 class ProfilePageViewController: UIViewController {
+    
+    @IBOutlet weak var backgroundImageView: UIImageView!
+    @IBOutlet weak var mainImageView: UIImageView!
+    @IBOutlet weak var name: UILabel!
+    @IBOutlet weak var username: UILabel!
+    @IBOutlet weak var tweetCount: UILabel!
+    @IBOutlet weak var followingCount: UILabel!
+    @IBOutlet weak var followersCount: UILabel!
+    
 
-    var user: User! 
+    var user: Tweet!    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        
+        backgroundImageView.setImageWithURL(user.backgroundProfileImageUrl!)
+        
+        mainImageView.setImageWithURL(user.profileImageUrl!)
+        mainImageView.layer.cornerRadius = 3
+        mainImageView.clipsToBounds = true
+        
+        name.text = user.name
+        
+        username.text = "@ \(user.username!)"
+        
+        tweetCount.text = "\(user.numTweets!)"
+        
+        followingCount.text = "\(user.numFollowing!)"
+        
+        followersCount.text = "\(user.numFollowers!)"
+
+
     }
 
     override func didReceiveMemoryWarning() {

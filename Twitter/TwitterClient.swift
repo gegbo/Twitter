@@ -106,7 +106,8 @@ class TwitterClient: BDBOAuth1SessionManager {
         )
     }
     
-    func favorite(id: Int, params: NSDictionary?, completion: (error: NSError?) -> () ){
+    func favorite(id: Int, params: NSDictionary?, completion: (error: NSError?) -> () )
+    {
         POST("1.1/favorites/create.json?id=\(id)", parameters: params, success: { (operation: NSURLSessionDataTask!, response: AnyObject?) -> Void in
             print("Liked tweet with id: \(id)")
             completion(error: nil)
@@ -116,4 +117,26 @@ class TwitterClient: BDBOAuth1SessionManager {
             }
         )
     }
+    
+    
+    func status(text: String, replyId: Int, params: NSDictionary?, completion: (error: NSError?) -> ())
+    {
+        var parameters: [String : AnyObject] = ["status": text]
+
+        //in case im replying to a tweet
+        //have to work on it still!
+        if replyId != 0
+        {
+            parameters["in_reply_to_status_id"] = replyId
+        }
+
+        
+        POST("https://api.twitter.com/1.1/statuses/update.json", parameters: parameters, success: { (task: NSURLSessionDataTask!, response: AnyObject?) -> Void in
+            print("sucessfully did an update")
+            }) { (task: NSURLSessionDataTask?, error: NSError) -> Void in
+            print("Did not do an update")
+            completion(error: error)
+        }
+    }
+    
 }

@@ -19,6 +19,8 @@ class TweetsViewController: UIViewController, UITableViewDataSource,UITableViewD
 
         // Do any additional setup after loading the view.
         
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "reloadTableData:", name: "RefreshTable", object: nil)
+        
         //set up the tableview
         tableView.dataSource = self
         tableView.delegate = self
@@ -43,6 +45,12 @@ class TweetsViewController: UIViewController, UITableViewDataSource,UITableViewD
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func reloadTableData(notification: NSNotification)
+    {
+        self.tableView.reloadData()
+        print("I got here!")
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int
@@ -112,6 +120,7 @@ class TweetsViewController: UIViewController, UITableViewDataSource,UITableViewD
         
         if (segue.identifier == "profileView")
         {
+            print("Going to profile page")
             let button = sender as! UIButton
             let view = button.superview!
             let cell = view.superview as! TweetCell
@@ -123,7 +132,7 @@ class TweetsViewController: UIViewController, UITableViewDataSource,UITableViewD
             let detailViewController = segue.destinationViewController as! ProfilePageViewController
             
             //create a user variale for tweets and then set user to tweets.user
-            print("Going to profile page")
+            detailViewController.user = user
         }
         
         if(segue.identifier == "tweetDetail")
@@ -138,6 +147,16 @@ class TweetsViewController: UIViewController, UITableViewDataSource,UITableViewD
             
             detailViewController.tweet = tweet
 
+        }
+        
+        if (segue.identifier == "composeSegue")
+        {
+            print("Going to compose page")
+            
+            let detailViewController = segue.destinationViewController as! ComposeViewController
+            
+            detailViewController.user = User._currentUser
+            
         }
 
     }

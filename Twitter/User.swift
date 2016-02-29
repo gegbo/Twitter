@@ -13,7 +13,8 @@ class User: NSObject {
     var name: String?
     var screenName: String?
     var profileImageUrl: NSURL?
-    var tagLine: String?
+    var backgroundProfileImageUrl: NSURL?
+    var tagLine: String? 
     
     var dictionary: NSDictionary?
     
@@ -33,6 +34,14 @@ class User: NSObject {
             profileImageUrl = NSURL(string: profileImageString)
             
         }
+        
+        let backgroundProfileImageString = dictionary["profile_background_image_url_https"] as? String
+        if let backgroundProfileImageString = backgroundProfileImageString
+        {
+            backgroundProfileImageUrl = NSURL(string: backgroundProfileImageString)
+            
+        }
+        
         tagLine = dictionary["description"] as? String
     }
 
